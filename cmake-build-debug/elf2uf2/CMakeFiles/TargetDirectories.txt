@@ -1,0 +1,5 @@
+/home/henning/Documents/university/MRT/MRT-1-Praktikum/C-Ultrasonic/cmake-build-debug/elf2uf2/CMakeFiles/elf2uf2.dir
+/home/henning/Documents/university/MRT/MRT-1-Praktikum/C-Ultrasonic/cmake-build-debug/elf2uf2/CMakeFiles/edit_cache.dir
+/home/henning/Documents/university/MRT/MRT-1-Praktikum/C-Ultrasonic/cmake-build-debug/elf2uf2/CMakeFiles/rebuild_cache.dir
+/home/henning/Documents/university/MRT/MRT-1-Praktikum/C-Ultrasonic/cmake-build-debug/elf2uf2/boot_uf2_headers/CMakeFiles/edit_cache.dir
+/home/henning/Documents/university/MRT/MRT-1-Praktikum/C-Ultrasonic/cmake-build-debug/elf2uf2/boot_uf2_headers/CMakeFiles/rebuild_cache.dir

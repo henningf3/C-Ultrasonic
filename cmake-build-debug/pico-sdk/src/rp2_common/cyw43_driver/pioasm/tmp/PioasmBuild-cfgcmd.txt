@@ -1,0 +1,1 @@
+cmd='/home/henning/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/223.8214.51/bin/cmake/linux/bin/cmake;-GNinja;-C<TMP_DIR>/PioasmBuild-cache-$<CONFIG>.cmake;<SOURCE_DIR><SOURCE_SUBDIR>'
