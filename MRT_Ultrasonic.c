@@ -5,19 +5,18 @@
 #define PWM_PIN 0
 #define TRIGGER_PIN 4
 #define ECHO_PIN 5
-#define DAC_PIN 31
 #define WRAP 41666 // 125 MHz clock / 3 kHz PWM frequency
 
 #define DIST1 100
 #define DIST2 1000
 #define DIST3 2000
 
-/*
- * This function generates buzzer output.
- * Signal and break times are set by PWM.
- * Volume is set by reference voltage.
+/**
+ * @brief Determines the high time of the buzzer.
+ *
+ * @param distance_mm Distance in mm.
+ * @return int High time in ms.
  */
-// return value is in milliseconds
 int determine_high_time(int distance_mm)
 {
     if (distance_mm < DIST1)
@@ -38,6 +37,12 @@ int determine_high_time(int distance_mm)
     }
 }
 
+/**
+ * @brief Determines the low time of the buzzer.
+ *
+ * @param distance_mm Distance in mm.
+ * @return int Low time in ms.
+ */
 int determine_low_time(int distance_mm)
 {
     if (distance_mm < DIST1)
@@ -58,6 +63,12 @@ int determine_low_time(int distance_mm)
     }
 }
 
+/**
+ * @brief Initializes the GPIO and PWM.
+ *
+ * @param slice_num Pointer to the slice number.
+ * @param chan Pointer to the channel number.
+ */
 void init(uint *slice_num, uint *chan)
 {
     // GPIO init:
@@ -74,7 +85,11 @@ void init(uint *slice_num, uint *chan)
     pwm_set_enabled(*slice_num, true);
 }
 
-// returns distance in mm
+/**
+ * @brief Reads the distance from the ultrasonic sensor.
+ *
+ * @return int Distance in mm.
+ */
 int read_buzzer()
 {
     gpio_put(TRIGGER_PIN, 0);
@@ -99,15 +114,41 @@ int read_buzzer()
     return (int)((double)duration / 2 * 0.343); // value in mm (0.5 time for half way * speed of sound)
 }
 
+/**
+ * @brief Sets the volume of the buzzer.
+ *
+ * @param distance_mm Distance in mm.
+ * @param pwm_compare Pointer to the pwm compare value.
+ */
+void set_volume(int distance_mm, float *pwm_compare)
+{
+    if (distance_mm < DIST1)
+    {
+        *pwm_compare = 1 / 5700 * (float)DIST1 + 0.5
+    }
+    else if (distance_mm > DIST3)
+    {
+        *pwm_compare = 1 / 5700 * (float)DIST3 + 0.5;
+    }
+
+    *pwm_compare = 1 / 5700 * (float)distance_mm + 0.5;
+}
+
+/**
+ * @brief Main function.
+ */
 int main()
 {
     int distance_mm = 1000;
     uint slice_num, chan;
+    float pwm_compare;
+
     init(&slice_num, &chan);
     while (true)
     {
         distance_mm = read_buzzer();
-        pwm_set_chan_level(slice_num, PWM_CHAN_A, WRAP / 2);
+        set_volume(distance_mm, &pwm_compare);
+        pwm_set_chan_level(slice_num, PWM_CHAN_A, WRAP * pwm_compare);
         sleep_ms(determine_high_time(distance_mm));
         pwm_set_chan_level(slice_num, PWM_CHAN_A, 0);
         sleep_ms(determine_low_time(distance_mm));
