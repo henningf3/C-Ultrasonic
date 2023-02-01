@@ -17,4 +17,4 @@ Dies ist die einzige Stelle, die nicht auf Anhieb funktioniert hat und während 
 
 Die 3 kHz werden durch den `WRAP`-Wert eingestellt: $$\mathrm{WRAP} = \frac{125 \mathrm{MHz}\ (clock)}{3 \mathrm{kHz}} = 41666$$
 `distance_mm` wird über die Schallgeschwindigkeit ermittelt, wobei `duration` die Zeit in Mikrosekunden ist, die laut Sensor für den Weg zur Wand **und** zurück benötigt wurde. 
-$$\mathrm{distance_mm}=\frac{\frac{duration}{\mathrm{\mu s}} \cdot 0.340 \frac{\mathrm{mm}}{\mathrm{\mu s}}}{2}$$
+$$\mathrm{distance_mm}=\frac{{\mathrm{duration}}_{\mathrm{\mu s}} \cdot 0.340 \frac{\mathrm{mm}}{\mathrm{\mu s}}}{2}$$
