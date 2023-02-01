@@ -15,7 +15,7 @@
 #define DIST3 2000
 
 /**
- * @brief Determines the high time of the buzzer based off linear interpolation.
+ * @brief Determines the high time of the buzzer based on linear interpolation.
  *
  * @param distance_mm Distance in mm.
  * @return int High time in ms.
@@ -33,7 +33,7 @@ int determine_high_time(int distance_mm) {
 }
 
 /**
- * @brief Determines the low time of the buzzer based off linear interpolation.
+ * @brief Determines the low time of the buzzer based on linear interpolation.
  *
  * @param distance_mm Distance in mm.
  * @return int Low time in ms.
