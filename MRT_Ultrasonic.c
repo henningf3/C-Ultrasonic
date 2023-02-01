@@ -20,22 +20,14 @@
  * @param distance_mm Distance in mm.
  * @return int High time in ms.
  */
-int determine_high_time(int distance_mm)
-{
-    if (distance_mm < DIST1)
-    {
+int determine_high_time(int distance_mm) {
+    if (distance_mm < DIST1) {
         return 300;
-    }
-    else if (distance_mm < DIST2 && distance_mm >= DIST1)
-    {
-        return (int)((double)distance_mm * 2 / 9 + 277.7);
-    }
-    else if (distance_mm < DIST3 && distance_mm >= DIST2)
-    {
-        return (int)((double)distance_mm * 0.5);
-    }
-    else
-    {
+    } else if (distance_mm < DIST2 && distance_mm >= DIST1) {
+        return (int) ((double) distance_mm * 2 / 9 + 277.7);
+    } else if (distance_mm < DIST3 && distance_mm >= DIST2) {
+        return (int) ((double) distance_mm * 0.5);
+    } else {
         return 1000;
     }
 }
@@ -46,22 +38,14 @@ int determine_high_time(int distance_mm)
  * @param distance_mm Distance in mm.
  * @return int Low time in ms.
  */
-int determine_low_time(int distance_mm)
-{
-    if (distance_mm < DIST1)
-    {
+int determine_low_time(int distance_mm) {
+    if (distance_mm < DIST1) {
         return 300;
-    }
-    else if (distance_mm < DIST2 && distance_mm >= DIST1)
-    {
-        return (int)((double)distance_mm * 4 / 9 + 255.6);
-    }
-    else if (distance_mm < DIST3 && distance_mm >= DIST2)
-    {
-        return (int)((double)distance_mm * 13 / 10 - 600);
-    }
-    else
-    {
+    } else if (distance_mm < DIST2 && distance_mm >= DIST1) {
+        return (int) ((double) distance_mm * 4 / 9 + 255.6);
+    } else if (distance_mm < DIST3 && distance_mm >= DIST2) {
+        return (int) ((double) distance_mm * 13 / 10 - 600);
+    } else {
         return 2000;
     }
 }
@@ -73,7 +57,7 @@ int determine_low_time(int distance_mm)
  * @param chan Pointer to the channel number.
  */
 void init(uint *slice_num, uint *chan) {
-    //For serial output: DEBUG-Information
+    //For serial output: DEBUG-Information->Cmake file-comments for more information
     stdio_init_all();
     // GPIO init:
     gpio_init(TRIGGER_PIN);
@@ -93,8 +77,7 @@ void init(uint *slice_num, uint *chan) {
  *
  * @return int Distance in mm.
  */
-int readSensor()
-{
+int readSensor() {
     gpio_put(TRIGGER_PIN, 0);
     sleep_us(3); // ensure Pin is really low
     gpio_put(TRIGGER_PIN, 1);
@@ -105,20 +88,17 @@ int readSensor()
     uint64_t start = time_us_64();
 
     // wait until echo pin is high
-    while (gpio_get(ECHO_PIN) == 0)
-    {
-        if (time_us_64() - start > 10000000)
-        {
+    while (gpio_get(ECHO_PIN) == 0) {
+        if (time_us_64() - start > 10000000) {
             return -1; // if no echo is received after 10s, return -1
         }
     }
-    while (gpio_get(ECHO_PIN) == 1)
-    {
+    while (gpio_get(ECHO_PIN) == 1) {
         continue;
     }
     uint64_t duration = time_us_64() - start;
 
-    return (int)((double)duration / 2 * 0.343); // value in mm (0.5 time for half way * speed of sound)
+    return (int) ((double) duration / 2 * 0.343); // value in mm (0.5 time for half way * speed of sound)
 }
 
 /**
@@ -129,17 +109,13 @@ int readSensor()
  * @param distance_mm Distance in mm.
  * @param pwm_compare Pointer to the pwm compare value.
  */
-void set_volume(int distance_mm, float *pwm_compare)
-{
-    if (distance_mm < DIST1)
-    {
-        *pwm_compare = 2e-4f * (float)DIST3;
+void set_volume(int distance_mm, float *pwm_compare) {
+    if (distance_mm < DIST1) {
+        *pwm_compare = 2e-4f * (float) DIST3;
+    } else if (distance_mm > DIST3) {
+        *pwm_compare = 2e-4f * (float) DIST1;
     }
-    else if (distance_mm > DIST3)
-    {
-        *pwm_compare = 2e-4f * (float)DIST1;
-    }
-    *pwm_compare = 2e-4f * (float)DIST3 - 2e-4f * (float)distance_mm;
+    *pwm_compare = 2e-4f * (float) DIST3 - 2e-4f * (float) distance_mm;
 }
 
 /**
@@ -150,13 +126,13 @@ int main() {
     uint slice_num, chan;
     float pwm_compare;
     init(&slice_num, &chan);
-    /*for (int i = 0; i < WRAP; i++) {
-        pwm_set_chan_level(slice_num, chan, i);
-        printf("%d\n", i);
-        sleep_ms(10);
+    /*This loop was used to determine volume.
+     * for (int i = 0; i < WRAP; i++) {
+     *   pwm_set_chan_level(slice_num, chan, i);
+     *   printf("%d\n", i);
+     *   sleep_ms(1);
     }*/
     while (true) {
-
         distance_mm = readSensor();
         set_volume(distance_mm, &pwm_compare);
         pwm_set_chan_level(slice_num, PWM_CHAN_A, WRAP * pwm_compare);
