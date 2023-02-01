@@ -15,6 +15,6 @@ In Abhängigkeit von `distance_mm` wird die Ausgabe angepasst:
 In diesen 3 Methoden wird die lineare Interpolation durchgeführt. Die Werte für die Interpolation der Lautstärke wurden während des Versuches mit einer Experimentalschleife ermittelt. Dazu wurde die Lautstärke (der Duty-Cycle) sukzessive inkrementiert, bis kein Unterschied mehr zu hören war.  
 Dies ist die einzige Stelle, die nicht auf Anhieb funktioniert hat und während des Termins angepasst werden musste.
 
-Die 3 kHz werden durch den `WRAP`-Wert eingestellt: [WRAP = \frac{125 MHz (clock)}{3 kHz} = 41666]
+Die 3 kHz werden durch den `WRAP`-Wert eingestellt: $$WRAP = \frac{125 MHz (clock)}{3 kHz} = 41666$$
 `distance_mm` wird über die Schallgeschwindigkeit ermittelt, wobei `duration` die Zeit in Mikrosekunden ist, die laut Sensor für den Weg zur Wand **und** zurück benötigt wurde. 
-[distance_mm=\frac{duration \cdot 0.340 mm/\mu s}{2}]
+$$distance_mm=\frac{duration \cdot 0.340 mm/\mu s}{2}$$
