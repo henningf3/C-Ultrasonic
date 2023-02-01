@@ -12,7 +12,7 @@ In Abhängigkeit von `distance_mm` wird die Ausgabe angepasst:
 - Durch `determine_high_time(distance_mm)` wird die Länge des Tons bestimmt.
 - Äquivalent dazu wird die Pause zwischen den Tönen errechnet (`determine_low_time(distance_mm)`).
 
-In diesen 3 Methoden wird die lineare Interpolation durchgeführt. Die Werte für die Interpolation der Lautstärke wurden während des Versuches mit einer Experimentalschleife ermittelt. Dazu wurde die Lautstärke (der Duty-Cycle) sukzessive inkrementiert, bis kein Unterschied mehr zu hören war.  
+In diesen 3 Funktionen wird die lineare Interpolation durchgeführt. Die Werte für die Interpolation der Lautstärke wurden während des Versuches mit einer Experimentalschleife ermittelt. Dazu wurde die Lautstärke (der Duty-Cycle) sukzessive inkrementiert, bis kein Unterschied mehr zu hören war.  
 Dies ist die einzige Stelle, die nicht auf Anhieb funktioniert hat und während des Termins angepasst werden musste.
 
 Die 3 kHz werden durch den `WRAP`-Wert eingestellt: $$\mathrm{WRAP} = \frac{125 \mathrm{MHz}\ (clock)}{3 \mathrm{kHz}} = 41666$$
