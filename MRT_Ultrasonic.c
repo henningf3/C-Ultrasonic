@@ -57,7 +57,7 @@ int determine_low_time(int distance_mm) {
  * @param chan Pointer to the channel number.
  */
 void init(uint *slice_num, uint *chan) {
-    //For serial output
+    //For serial output: DEBUG-Information
     stdio_init_all();
     // GPIO init:
     gpio_init(TRIGGER_PIN);
@@ -117,11 +117,10 @@ void set_volume(int distance_mm, float *pwm_compare) {
  * @brief Main function.
  */
 int main() {
-    int distance_mm = 1000;
+    int distance_mm;
     uint slice_num, chan;
     float pwm_compare;
     init(&slice_num, &chan);
-    pwm_set_chan_level(slice_num, PWM_CHAN_A, WRAP /2);
     /*for (int i = 0; i < WRAP; i++) {
         pwm_set_chan_level(slice_num, chan, i);
         printf("%d\n", i);
