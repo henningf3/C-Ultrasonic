@@ -123,7 +123,7 @@ int readSensor()
 
 /**
  * @brief Sets the volume of the buzzer by changing the pwm compare value.
- * @brief PWM compare influences duty cycle which influences volume.
+ * @brief PWM compare influences duty cycle which determines volume.
  * @brief The volume is interpolated linearly proportional to the distance.
  *
  * @param distance_mm Distance in mm.
