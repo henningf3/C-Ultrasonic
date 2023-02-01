@@ -32,6 +32,13 @@ add_executable(MRT_Ultrasonic MRT_Ultrasonic.c )
 pico_set_program_name(MRT_Ultrasonic "MRT_Ultrasonic")
 pico_enable_stdio_uart(MRT_Ultrasonic 0)
 pico_enable_stdio_usb(MRT_Ultrasonic 1)
+#CMAKE : pico_enable_stdio_usb(PROJEKTNAME 1)
+#CMAKE: target_link_libraries(PROJEKTNAME pico_stdlib)
+#C-Code: stdio_init_all(); //for printf
+#C-Code: printf(...);
+#BASH: sudo dmesg | tail //identify Pico: /dev/ttyACM0 in most cases
+#BASH: screen /dev/ttyACM0 115200 //screen PI BAUDRATE
+
 
 
 # Add the standard include files to the build
@@ -41,6 +48,7 @@ target_include_directories(MRT_Ultrasonic PRIVATE
 )
 
 # Add any user requested libraries
+
 target_link_libraries(MRT_Ultrasonic
         pico_stdlib
         hardware_pwm

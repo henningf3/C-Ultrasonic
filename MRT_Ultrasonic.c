@@ -1,11 +1,14 @@
 #include "hardware/pwm.h"
 #include "hardware/gpio.h"
 #include "pico/time.h"
+#include "pico/stdlib.h"
+
+#include <stdio.h>
 
 #define PWM_PIN 0
 #define TRIGGER_PIN 4
 #define ECHO_PIN 5
-#define WRAP 41666 // 125 MHz clock / 3 kHz PWM frequency
+#define WRAP 41666 // 125 MHz clock / 3 kHz PWM frequency 41666
 
 #define DIST1 100
 #define DIST2 1000
@@ -54,6 +57,8 @@ int determine_low_time(int distance_mm) {
  * @param chan Pointer to the channel number.
  */
 void init(uint *slice_num, uint *chan) {
+    //For serial output
+    stdio_init_all();
     // GPIO init:
     gpio_init(TRIGGER_PIN);
     gpio_set_dir(TRIGGER_PIN, GPIO_OUT);
@@ -89,7 +94,8 @@ int readSensor() {
         continue;
     }
     uint64_t duration = time_us_64() - start;
-    return (int) ((double) duration / 2 * 343); // value in mm (0.5 time for half way * speed of sound)
+
+    return (int) ((double) duration / 2 * 0.343); // value in mm (0.5 time for half way * speed of sound)
 }
 
 /**
@@ -100,11 +106,11 @@ int readSensor() {
  */
 void set_volume(int distance_mm, float *pwm_compare) {
     if (distance_mm < DIST1) {
-        *pwm_compare = 1 / 5700 * (float) DIST1 + 0.5;
+        *pwm_compare = 2e-4f * (float) DIST3;
     } else if (distance_mm > DIST3) {
-        *pwm_compare = 1 / 5700 * (float) DIST3 + 0.5;
+        *pwm_compare = 2e-4f * (float) DIST1;
     }
-    *pwm_compare = 1 / 5700 * (float) distance_mm + 0.5;
+    *pwm_compare =2e-4f * (float) DIST3 -2e-4f * (float) distance_mm;
 }
 
 /**
@@ -115,11 +121,19 @@ int main() {
     uint slice_num, chan;
     float pwm_compare;
     init(&slice_num, &chan);
+    pwm_set_chan_level(slice_num, PWM_CHAN_A, WRAP /2);
+    /*for (int i = 0; i < WRAP; i++) {
+        pwm_set_chan_level(slice_num, chan, i);
+        printf("%d\n", i);
+        sleep_ms(10);
+    }*/
     while (true) {
         distance_mm = readSensor();
+        printf("Distance: %d mm\n", distance_mm);
         set_volume(distance_mm, &pwm_compare);
         pwm_set_chan_level(slice_num, PWM_CHAN_A, WRAP * pwm_compare);
         sleep_ms(determine_high_time(distance_mm));
+        distance_mm = readSensor();
         pwm_set_chan_level(slice_num, PWM_CHAN_A, 0);
         sleep_ms(determine_low_time(distance_mm));
     }
