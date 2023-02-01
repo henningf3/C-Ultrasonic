@@ -18,7 +18,7 @@ Die 3 kHz werden durch den `WRAP`-Wert eingestellt: $$\mathrm{WRAP} = \frac{125 
 $$\mathrm{distance_mm}=\frac{{\mathrm{duration}}_{\mathrm{\mu s}} \cdot 0.340 \frac{\mathrm{mm}}{\mathrm{\mu s}}}{2}$$
 
 ## Probleme
-Die Werte für die Interpolation der Lautstärke wurden während des Versuches mit einer Experimentalschleife ermittelt. Dazu wurde die Lautstärke (der Duty-Cycle) sukzessive inkrementiert, bis kein Unterschied mehr zu hören war.  
+Die Werte für die Interpolation der Lautstärke wurden während des Versuches mit einer Experimentalschleife (siehe auskommentierter Experimentalteil) ermittelt. Dazu wurde die Lautstärke (der Duty-Cycle) sukzessive inkrementiert, bis kein Unterschied mehr zu hören war.  
 Allerdings war die vorgeschriebene Methode falsch herum (wenn man laut hören sollte, hörte man leise und umgekehrt), weshalb diese noch angepasst werden musste.
 
 Ein anderes Problem war, dass das Programm nicht schnell genug reagierte. In der ursprünglichen Implementierung wurde die aktuelle Entfernung nach jeder Pause determiniert. Die Lösung erfolgte dadurch, dass die Entfernung nun nach jedem Ton und jeder Pause ermittelt wird.
